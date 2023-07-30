@@ -8,13 +8,13 @@ package main
 
 import (
 	"database/sql"
+	"github.com/google/wire"
 	"github.com/twsm000/goexp-cleanarch/internal/entity"
 	"github.com/twsm000/goexp-cleanarch/internal/event"
 	"github.com/twsm000/goexp-cleanarch/internal/infra/database"
 	"github.com/twsm000/goexp-cleanarch/internal/infra/web"
 	"github.com/twsm000/goexp-cleanarch/internal/usecase"
 	"github.com/twsm000/goexp-cleanarch/pkg/events"
-	"github.com/google/wire"
 )
 
 // Injectors from wire.go:
@@ -31,6 +31,12 @@ func NewWebOrderHandler(db *sql.DB, eventDispatcher events.EventDispatcherInterf
 	orderCreated := event.NewOrderCreated()
 	webOrderHandler := web.NewWebOrderHandler(eventDispatcher, orderRepository, orderCreated)
 	return webOrderHandler
+}
+
+func NewListOrdersUseCase(db *sql.DB) *usecase.ListOrdersUseCase {
+	orderRepository := database.NewOrderRepository(db)
+	listOrdersUseCase := usecase.NewListOrdersUseCase(orderRepository)
+	return listOrdersUseCase
 }
 
 // wire.go:
