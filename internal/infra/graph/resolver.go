@@ -7,5 +7,6 @@ import "github.com/twsm000/goexp-cleanarch/internal/usecase"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	CreateOrderUseCase usecase.CreateOrderUseCase
+	CreateOrderUseCase *usecase.CreateOrderUseCase
+	ListOrdersUseCase  *usecase.ListOrdersUseCase
 }
