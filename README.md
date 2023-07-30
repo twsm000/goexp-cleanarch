@@ -19,3 +19,9 @@ migrate -path=internal/infra/database/migrations -database "mysql://root:root@tc
 ```
 
 - Com esses comandos você irá inicializar as dependências do projeto, executar o docker para rodar o mysql e rabbitmq e inicializar as migrations para que o banco esteja com as tabelas corretas para serem utilizadas pelo projeto.
+
+- Execute o comando abaixo para buildar e executar o servidor.
+
+```bash
+go build -o server ./cmd/ordersystem && ./server
+```
