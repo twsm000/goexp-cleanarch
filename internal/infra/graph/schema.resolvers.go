@@ -15,8 +15,8 @@ import (
 func (r *mutationResolver) CreateOrder(ctx context.Context, input *model.OrderInput) (*model.Order, error) {
 	dto := usecase.OrderInputDTO{
 		ID:    input.ID,
-		Price: float64(input.Price),
-		Tax:   float64(input.Tax),
+		Price: input.Price,
+		Tax:   input.Tax,
 	}
 	output, err := r.CreateOrderUseCase.Execute(dto)
 	if err != nil {
@@ -24,13 +24,37 @@ func (r *mutationResolver) CreateOrder(ctx context.Context, input *model.OrderIn
 	}
 	return &model.Order{
 		ID:         output.ID,
-		Price:      float64(output.Price),
-		Tax:        float64(output.Tax),
-		FinalPrice: float64(output.FinalPrice),
+		Price:      output.Price,
+		Tax:        output.Tax,
+		FinalPrice: output.FinalPrice,
 	}, nil
+}
+
+// ListOrders is the resolver for the ListOrders field.
+func (r *queryResolver) ListOrders(ctx context.Context) ([]*model.Order, error) {
+	orders, err := r.ListOrdersUseCase.Execute()
+	if err != nil {
+		return nil, err
+	}
+
+	result := make([]*model.Order, len(orders))
+	for i := 0; i < len(orders); i++ {
+		result[i] = &model.Order{
+			ID:         orders[i].ID,
+			Price:      orders[i].Price,
+			Tax:        orders[i].Tax,
+			FinalPrice: orders[i].FinalPrice,
+		}
+	}
+
+	return result, nil
 }
 
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
+// Query returns QueryResolver implementation.
+func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+
 type mutationResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }
