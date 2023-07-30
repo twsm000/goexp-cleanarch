@@ -42,6 +42,7 @@ func (c *CreateOrderUseCase) Execute(input OrderInputDTO) (OrderOutputDTO, error
 		Price: input.Price,
 		Tax:   input.Tax,
 	}
+
 	order.CalculateFinalPrice()
 	if err := c.OrderRepository.Save(&order); err != nil {
 		return OrderOutputDTO{}, err
