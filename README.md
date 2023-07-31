@@ -25,3 +25,43 @@ migrate -path=internal/infra/database/migrations -database "mysql://root:root@tc
 ```bash
 go build -o server ./cmd/ordersystem && ./server
 ```
+
+### Execução via gRPC com Evans
+
+#### Instalação do Evans utilizando Go
+
+```bash
+go install github.com/ktr0731/evans@latest
+```
+
+### Acessando os serviço de ordens via Evans
+
+- Com o serviço rodando abra um novo terminal e acesse o Evans pelo comando:
+
+```bash
+evans -r repl
+```
+
+- Conecte-se ao package:
+
+```bash
+package pb
+```
+
+- Conecte-se ao serviço de ordens:
+
+```bash
+service OrderService
+```
+
+#### Criando uma nova ordem
+
+```bash
+call CreateOrder
+```
+
+#### Listando as ordens
+
+```bash
+call ListOrders
+```
